@@ -18,13 +18,25 @@
 const express = require('express');
 
 const app = express();
+const port = 9100;
+
+app.use(express.static('public'));
+app.use('/css', express.static(__dirname + 'public/css'));
+app.use('/js', express.static(__dirname + 'public/js'));
+app.use('/img', express.static(__dirname + 'public/img'));
+
+app.set('views', __dirname +'/views');
+app.set('view engine', 'ejs')
+
+
 
 app.get('/', (req, res) => {
-  res.status(200).send('Hello!').end();
+  res.render('index', {title: "Beautiful title"});
+  // res.status(200).send('Hello!').end();
 });
 
 // Start the server
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || port;
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log('Press Ctrl+C to quit.');
