@@ -30,10 +30,80 @@ app.set('view engine', 'ejs')
 
 
 
+// Firebase App (the core Firebase SDK) is always required and
+// must be listed before other Firebase SDKs
+var firebase = require("firebase/app");
+
+// Add the Firebase products that you want to use
+require("firebase/auth");
+require("firebase/firestore");
+
+
+var firebaseConfig = {
+  apiKey: "API_KEY",
+  authDomain: "PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://PROJECT_ID.firebaseio.com",
+  projectId: "PROJECT_ID",
+  storageBucket: "PROJECT_ID.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID",
+  measurementId: "G-MEASUREMENT_ID",
+};
+
+
+
+function authStateObserver(user) {
+    console.log("WOdewW");
+}
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initiate Firebase Auth.
+function initFirebaseAuth(callback) {
+  // Listen to auth state changes.
+  firebase.auth().onAuthStateChanged(authStateObserver);
+  callback();
+}
+
+
+
+
 app.get('/', (req, res) => {
+  // initFirebaseAuth();
+  initFirebaseAuth(()=>{
+    signIn() ;
+  })
   res.render('index', {title: "Beautiful title"});
   // res.status(200).send('Hello!').end();
 });
+
+app.get('/signin', (req, res) => {
+  initFirebaseAuth(()=>{
+    signIn() ;
+  })
+  res.render('index', {title: "Beautiful title"});
+  // res.status(200).send('Hello!').end();
+});
+
+
+function signIn() {
+  // Sign into Firebase using popup auth & Google as the identity provider.
+  var provider = new firebase.auth.GoogleAuthProvider();
+  console.log(provider);
+
+  firebase.auth().signInWithPopup(provider);
+
+  console.log(firebase.auth().currentUser.displayName);
+  // firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(AIzaSyADHUvrwbwqSan1ReQkD1mw-btvyAS4gGU))
+  // firebase.auth().signInWithPopup(provider).then((result) => {
+  //   console.log("CEVA1");
+  // }, (error) => {
+  //   console.log(error);
+
+  // });
+  // firebase.auth().signInWithPopup(provider);
+}
+
 
 // Start the server
 const PORT = process.env.PORT || port;
@@ -44,3 +114,4 @@ app.listen(PORT, () => {
 // [END gae_flex_quickstart]
 
 module.exports = app;
+

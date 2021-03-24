@@ -1,0 +1,13 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+
+    "hosting": {
+      "port": 5002,
+      "host": "0.0.0.0"
+    }
+  }
+}
